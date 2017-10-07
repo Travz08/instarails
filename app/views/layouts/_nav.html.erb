@@ -1,0 +1,21 @@
+  <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right text-center">
+        <li>
+        	<%= render 'devise/homepage', class: "btn btn-default navbar-btn" %>
+        </li>
+        <li>
+        	<%= render 'devise/profile', class: "btn btn-default navbar-btn" %>
+        </li>
+        <li>
+          <% if params[:action] != "index" && params[:action] != "edit" %>
+        	<%= render 'devise/registration_items', class: "btn btn-default navbar-btn" %>
+          <% end %>
+        </li>
+        <li>
+        	<%= render 'devise/login_items', class: "btn btn-default navbar-btn" %>
+        </li>
+      </ul>
+    </div>
+  </div><!-- /.container-fluid -->
+</nav>

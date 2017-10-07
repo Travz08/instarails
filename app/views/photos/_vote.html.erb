@@ -1,0 +1,13 @@
+
+
+  <% if current_user.liked? photo %>
+  <div id="vote_<%= photo.id %>" class="vote">
+  <%= link_to 'Vote Down', dislike_photo_path(photo), :method => :put, :remote => true %>
+  </div>
+  <span><%= photo.get_upvotes.size %></span>
+  <% else %>  <!--show the current vote-->
+  <div id="vote_<%= photo.id %>" class="vote">
+  <%= link_to 'Vote Up', like_photo_path(photo), :method => :put, :remote => true %>
+  <span><%= photo.get_upvotes.size %></span>
+  </div>
+  <% end %>

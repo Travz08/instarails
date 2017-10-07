@@ -1,0 +1,29 @@
+<%= link_to 'Home', root_path, class: "btn btn-info" %>
+<%= link_to 'Edit Profile', edit_user_registration_path, class: "btn btn-info" %>
+<% @photos.each do |photo| %>
+<div class="card mx-auto text-center" style="width: 20rem;">
+  <img class="card-img-top" src="<%= photo.image_url %>" alt="Card image cap">
+  <div class="card-block">
+    <h4 class="card-title"><%= photo.user.username %></h4>
+    <p class="card-text"><%= photo.caption %></p>
+    <%= link_to 'Show', photo, class: "btn btn-primary" %>
+    <%= link_to 'Edit', edit_photo_path(photo), class: "btn btn-primary" %>
+    <%= link_to 'Destroy', photo, method: :delete, class: "btn btn-primary", data: { confirm: 'Are you sure?' } %>
+  </br>
+    <%= link_to like_photo_path(photo), method: :put do %>
+      Likes
+      <%= photo.get_upvotes.size %>
+    <% end %>
+
+    <%= link_to dislike_photo_path(photo), method: :put do %>
+      Dislikes
+      <%= photo.get_downvotes.size %>
+    <% end %>
+  </br>
+    <%= form_tag "/photos/comment" do %>
+        <%= text_area_tag "comment[comment]" %>
+        <%= submit_tag "Post Comment" %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

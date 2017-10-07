@@ -1,0 +1,5 @@
+<% if user_signed_in? && params[:action] != "profile" && params[:controller] != "home" %>
+
+  <%= link_to('My Profile', user_path, class: "btn btn-info btn-lg") %>
+
+<% end %>
