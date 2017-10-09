@@ -1,57 +1,44 @@
 <p id="notice"><%= notice %></p>
-<%= link_to('Logout', destroy_user_session_path, method: :delete, class: "btn btn-info") %>
-<%= link_to 'My Profile', user_path, class: "btn btn-info"%>
-<%= link_to 'Create New Post', new_photo_path, class: "btn btn-success" %>
 </br>
 <h1>Instagram Feed</h1>
+<!-- <#% if @recipes.blank? %>
+  <h4>Sorry. There are no posts containing the term <%= params[:search] %>.</h4>
+<#% end %> -->
 <% @photos.each do |photo| %>
-<div class="card bg-faded mx-auto" style="width: 20rem;">
+<div class="card bg-light mx-auto" style="width: 50rem;">
   <div class="card-block">
     <h4 class="card-title"><%= photo.user.username %></h4>
     <img class="card-img" src="<%= photo.image_url %>" alt="Card image cap">
     <% if current_user.liked? photo %>
-    <%= link_to 'Unlike', dislike_photo_path(photo), :class => "vote", :method => :put %>
+    <%= link_to "❤️", dislike_photo_path(photo), :class => "vote", :method => :put %>
     <span><%= photo.get_upvotes.size %></span>
     <% else %>  <!--show the current vote-->
-    <%= link_to 'Like', like_photo_path(photo), :class => "vote", :method => :put %>
+    <%= link_to '♡', like_photo_path(photo), :class => "vote", :method => :put %>
     <span><%= photo.get_upvotes.size %></span>
     <% end %>
   <!-- <#%= render :partial => '/photos/vote', :class => "vote", :locals => { photo: photo } %> -->
-  </br>
+    </br>
     <p class="card-text"><%= photo.caption %></p>
-
-    <div class="posts-wrapper row">
-        <% if photo.comments %>
-          <% photo.comments.each do |comment| %>
-            <div class="comment">
-              <div class="user-name">
-                <%= comment.user.username %>:
-              </div>
-              <div class="comment-content">
-                <%= comment.content %>
-              </div>
-              <% if comment.user == current_user %>
-                <%= link_to 'comment', photo_comment_path(photo, comment), method: :delete, data: { confirm: "Are you sure?" } %>
-              <% end %>
-            </div>
+    </br>
+    <% if photo.comments %>
+      <% photo.comments.each do |comment| %>
+        <%= comment.user.username %>:
+        <%= comment.content %>
+          <% if comment.user == current_user %>
+            <%= link_to 'Delete', photo_comment_path(photo, comment), class: "badge badge-danger", method: :delete, data: { confirm: "Are you sure you want to delete your comment?" } %>
           <% end %>
-        <div class="comment-form col-sm-11">
-          <%= form_for [photo, photo.comments.new] do |f| %>
-            <%= f.text_field :content, placeholder: 'Add a comment...' %>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  <% end %>
-</div>
-
-
-  </br>
-  <% if photo.user.id == current_user.id %>
-    <%= link_to 'Edit', edit_photo_path(photo), class: "btn btn-primary" %>
-    <%= link_to 'Destroy', photo, method: :delete, class: "btn btn-primary", data: { confirm: 'Are you sure?' } %>
-  <%end%>
+          </br>
+      <% end %>
+      <%= form_for [photo, photo.comments.new] do |f| %>
+        <%= f.text_field :content, placeholder: 'Add a comment...' %>
+      <% end %>
+    <% end %>
+    </br>
+    <% if photo.user.id == current_user.id %>
+      <%= link_to 'Edit', edit_photo_path(photo), class: "btn btn-primary" %>
+      <%= link_to 'Destroy', photo, method: :delete, class: "btn btn-primary", data: { confirm: 'Are you sure?' } %>
+    <%end%>
   </div>
 </div>
-</br>
+
 <% end %>

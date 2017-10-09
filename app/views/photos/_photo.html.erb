@@ -1,6 +1,8 @@
-<div>
-  <% if photo.image_data? %>
-    <%= image_tag photo.image_url %>
-  <% end %>
-  <p><%= photo.caption %> | <%= link_to 'Edit', edit_photo_path(photo) %></p>
-</div>
+      <% if photo.comments %>
+        <% photo.comments.each do |comment| %>
+              <% render 'comments/comment' %>
+        <% end %>
+      <% end %>
+        <%= form_for [photo, photo.comments.new] do |f| %>
+          <%= f.text_field :content, placeholder: 'Add a comment...' %>
+        <% end %>

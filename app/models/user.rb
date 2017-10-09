@@ -7,4 +7,7 @@ class User < ApplicationRecord
   has_many :photos
   has_many :comments, dependent: :destroy
   acts_as_voter
+  def self.search(search)
+  where("username LIKE ?", "%#{search}%")
+  end
 end
