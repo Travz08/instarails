@@ -5,13 +5,13 @@ class PhotosController < ApplicationController
   # GET /photos
   # GET /photos.json
   def index
-  @photos = Photo.all
-  if params[:search]
-    @photos = Photo.search(params[:search]).order("created_at DESC")
-  else
-    @photos = Photo.all.order("created_at DESC")
+    @photos = Photo.all
+    if params[:search]
+      @photos = Photo.search(params[:search]).order("created_at DESC")
+    else
+      @photos = Photo.all.order("created_at DESC")
+    end
   end
-end
 
   # GET /photos/1
   # GET /photos/1.json
@@ -67,10 +67,7 @@ end
   def upvote
     @photo = Photo.find(params[:id])
     @photo.upvote_by current_user
-    respond_to do |format|
-       format.html { redirect_to root_path }
-       format.js
-   end
+    redirect_to root_path
   end
 
   def downvote

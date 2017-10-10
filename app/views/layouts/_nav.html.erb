@@ -7,18 +7,23 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <%= link_to 'Create New Post', new_photo_path, class: "nav-link", style: "color: #fff;" %>
+        <% if user_signed_in? %>
+          <%= link_to 'Create New Post', new_photo_path, class: "nav-link", style: "color: #fff;" %>
+        <% end %>
       </li>
       <li class="nav-item">
-        <%= link_to 'My Profile', user_path, class: "nav-link", style: "color: #fff;"%>
+        <%= render 'devise/profile' %>
       </li>
       <li class="nav-item">
-        <%= link_to('Logout', destroy_user_session_path, method: :delete, class: "nav-link disabled", style: "color: #fff;") %>
+        <%= render 'devise/registration_items' %>
+      </li>
+      <li class="nav-item">
+        <%= render 'devise/login' %>
       </li>
     </ul>
     <%= form_tag(photos_path, :method => "get", id: "search-form", class: "form-inline my-2 my-lg-0") do %>
       <%= text_field_tag :search, params[:search], placeholder: "Search..", class: "form-control mr-sm-2" %>
-      <%= submit_tag "Search", :name => nil, class: "btn btn-outline-success my-2 my-sm-0" %>
+      <%= submit_tag "Search", :name => nil, class: "btn btn-outline-primary my-2 my-sm-0" %>
     <% end %>
   </div>
 </nav>

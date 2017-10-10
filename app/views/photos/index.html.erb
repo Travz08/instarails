@@ -1,19 +1,32 @@
 <p id="notice"><%= notice %></p>
 </br>
-<h1>Instagram Feed</h1>
+<div class="font">
+  <a class = "font" href="/">Instagram Feed</a>
+</div>
 <!-- <#% if @recipes.blank? %>
   <h4>Sorry. There are no posts containing the term <%= params[:search] %>.</h4>
 <#% end %> -->
 <% @photos.each do |photo| %>
 <div class="card bg-light mx-auto" style="width: 50rem;">
   <div class="card-block">
-    <h4 class="card-title"><%= photo.user.username %></h4>
+    <h4 class="card-title">
+      <div class="media">
+
+  <div class="media-body">
+    <h5 class="mt-4"><%= photo.user.username %></h5>
+  </div>
+</div>
+</h4>
     <img class="card-img" src="<%= photo.image_url %>" alt="Card image cap">
     <% if current_user.liked? photo %>
-    <%= link_to "❤️", dislike_photo_path(photo), :class => "vote", :method => :put %>
+    <%= link_to dislike_photo_path(photo), :class => "vote", :method => :put do %>
+      <%= image_tag("full_heart.svg.png") %>
+    <% end %>
     <span><%= photo.get_upvotes.size %></span>
     <% else %>  <!--show the current vote-->
-    <%= link_to '♡', like_photo_path(photo), :class => "vote", :method => :put %>
+    <%= link_to like_photo_path(photo), :class => "vote", :method => :put do%>
+    <%= image_tag("empty_heart.svg.png") %>
+    <% end %>
     <span><%= photo.get_upvotes.size %></span>
     <% end %>
   <!-- <#%= render :partial => '/photos/vote', :class => "vote", :locals => { photo: photo } %> -->
@@ -29,9 +42,11 @@
           <% end %>
           </br>
       <% end %>
+      <div class = "comment_form">
       <%= form_for [photo, photo.comments.new] do |f| %>
-        <%= f.text_field :content, placeholder: 'Add a comment...' %>
+        <%= f.text_field :content, placeholder: 'Add a comment...', :html => {:class => 'comment_form'} %>
       <% end %>
+      </div>
     <% end %>
     </br>
     <% if photo.user.id == current_user.id %>

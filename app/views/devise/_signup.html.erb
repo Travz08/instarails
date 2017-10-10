@@ -1,0 +1,7 @@
+<% if user_signed_in? == false%>
+
+  <% if params[:action] == "profile" %>
+    <%= link_to('Edit Profile', edit_user_registration_path, class: "nav-link", style: "color: #fff;") %>
+  <% else %>
+
+<% end %>
