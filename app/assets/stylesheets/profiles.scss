@@ -1,0 +1,16 @@
+// Place all the styles related to the Profiles controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+img.avatar {
+  width: 200px;
+  height: 200px;
+  float: left;
+  border-radius: 50%;
+  margin-right: 5rem;
+}
+
+.profile-post {
+  height: 310px;
+  object-fit: cover;
+}

@@ -11,26 +11,35 @@
   <div class="card-block">
     <h4 class="card-title">
       <div class="media">
-
-  <div class="media-body">
-    <h5 class="mt-4"><%= photo.user.username %></h5>
-  </div>
-</div>
-</h4>
+        <!-- <#%= image_tag(@profile.avatar_url, class: "media-avatar d-flex") %> -->
+        <div class="media-body">
+          <!-- <#%= link_to profile_path(photo.user.profile.id) do %> -->
+            <h5 class="mt-4"><%= photo.user.username %></h5>
+          <!-- <#% end %> -->
+        </div>
+      </div>
+      </h4>
     <img class="card-img" src="<%= photo.image_url %>" alt="Card image cap">
     <% if current_user.liked? photo %>
     <%= link_to dislike_photo_path(photo), :class => "vote", :method => :put do %>
       <%= image_tag("full_heart.svg.png") %>
     <% end %>
-    <span><%= photo.get_upvotes.size %></span>
-    <% else %>  <!--show the current vote-->
+    <% else %>
     <%= link_to like_photo_path(photo), :class => "vote", :method => :put do%>
-    <%= image_tag("empty_heart.svg.png") %>
+      <%= image_tag("empty_heart.svg.png") %>
     <% end %>
-    <span><%= photo.get_upvotes.size %></span>
     <% end %>
+    <%= link_to photo_comments_path(photo) do %>
+      <%= image_tag("comment_bubble.svg", style: "width: 30px;") %>
+    <% end %>
+    <!--show the current vote-->
+    <br/>
+    <% if photo.votes_for %>
+    Liked by
+    <% end %>
+    <% photo.votes_for.voters.each do |p| %> <%= p.username %> <% end %>
   <!-- <#%= render :partial => '/photos/vote', :class => "vote", :locals => { photo: photo } %> -->
-    </br>
+    <br/>
     <p class="card-text"><%= photo.caption %></p>
     </br>
     <% if photo.comments %>
@@ -42,11 +51,9 @@
           <% end %>
           </br>
       <% end %>
-      <div class = "comment_form">
       <%= form_for [photo, photo.comments.new] do |f| %>
-        <%= f.text_field :content, placeholder: 'Add a comment...', :html => {:class => 'comment_form'} %>
+        <%= f.text_field :content, placeholder: 'Add a comment...', class: "comment_form mx-auto" %>
       <% end %>
-      </div>
     <% end %>
     </br>
     <% if photo.user.id == current_user.id %>

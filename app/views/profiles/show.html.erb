@@ -1,0 +1,62 @@
+<% if @profile.present? %>
+
+<div class="jumbotron">
+  <div class="container">
+    <div class="media">
+      <%= image_tag(@profile.avatar_url, class: "avatar d-flex") %>
+      <div class="media-body">
+        <span class="mt-0 display-4"><%= @profile.user.username %></span>
+        <% if @profile.user == current_user %>
+           <%= link_to 'Edit', edit_profile_path, class: 'btn btn-secondary btn-block' %>
+         <!-- <#% else %>
+           <#%= form_with(model: @profile.user, method: :patch) do |f| %>
+             <#%= f.hidden_field :follow, value: true %>
+             <#%= f.button @profile.user.followed_by?(current_user) ? 'Unfollow' : 'Follow', class: 'btn btn-primary btn-block' %>
+           <#% end %> -->
+         <% end %>
+        <p><%= @profile.name %></br><%= @profile.bio %></p>
+      </div>
+    </div>
+
+  </div>
+</div>
+<p id="notice"><%= notice %></p>
+
+<% @photos.each_slice(3) do |photos| %>
+  <div class="row no-gutters margin-row">
+  <% photos.each do |photo| %>
+    <div class="col-4 card bg-light">
+      <div class="card-block">
+        <img class="card-img-top profile-post" src="<%= photo.image_url %>" alt="Card image cap">
+        <% if current_user.liked? photo %>
+          <%= link_to dislike_photo_path(photo), :class => "vote", :method => :put do %>
+            <%= image_tag("full_heart.svg.png") %>
+          <% end %>
+          <span><%= photo.get_upvotes.size %></span>
+        <% else %>  <!--show the current vote-->
+          <%= link_to like_photo_path(photo), :class => "vote", :method => :put do%>
+          <%= image_tag("empty_heart.svg.png") %>
+          <% end %>
+          <span><%= photo.get_upvotes.size %></span>
+        <% end %>
+        <%= link_to photo_comments_path(photo) do %>
+          <%= image_tag("comment_bubble.svg", style: "width: 30px;") %>
+        <% end %>
+
+      <!-- <#%= render :partial => '/photos/vote', :class => "vote", :locals => { photo: photo } %> -->
+        </br>
+        <p class="card-text"><%= photo.caption %></p>
+        </br>
+        <% if photo.user.id == current_user.id %>
+          <%= link_to 'Edit', edit_photo_path(photo), class: "btn btn-primary" %>
+          <%= link_to 'Destroy', photo, method: :delete, class: "btn btn-primary", data: { confirm: 'Are you sure?' } %>
+        <%end%>
+      </div>
+    </div>
+  <% end %>
+</div>
+<% end %>
+<% else %>
+<p>This User doesnt have a profile</p>
+<%= link_to "Back", root_path, class: "btn btn-primary" %>
+<% end %>

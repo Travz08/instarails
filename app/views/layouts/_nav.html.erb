@@ -18,7 +18,16 @@
         <%= render 'devise/registration_items' %>
       </li>
       <li class="nav-item">
-        <%= render 'devise/login' %>
+        <% if user_signed_in? %>
+
+          <%= link_to('Logout', destroy_user_session_path, method: :delete, class: "nav-link disabled", style: "color: #fff;") %>
+
+        <% else %>
+          <% if params[:action] != "new" %>
+            <%= link_to('Login', new_user_session_path, class: "nav-link disabled", style: "color: #fff;") %>
+          <% end %>
+        <% end %>
+
       </li>
     </ul>
     <%= form_tag(photos_path, :method => "get", id: "search-form", class: "form-inline my-2 my-lg-0") do %>

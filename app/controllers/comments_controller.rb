@@ -2,7 +2,7 @@ class CommentsController < ApplicationController
   before_action :set_photo
 
   def index
-    @comments = Comment.all
+    @comments = @photo.comments
   end
 
   def create
@@ -20,6 +20,20 @@ class CommentsController < ApplicationController
       render root_path
     end
   end
+
+  def update
+    respond_to do |format|
+      if @comment.update(comment_params)
+        format.html { redirect_to @comment, notice: 'Profile was successfully updated.' }
+        format.json { render :show, status: :ok, location: @comment }
+      else
+        format.html { render :edit }
+        format.json { render json: @comment.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+
   def destroy
     @comment = @photo.comments.find(params[:id])
 

@@ -5,6 +5,6 @@ class Photo < ApplicationRecord
   acts_as_votable
   include ImageUploader[:image]
   def self.search(search)
-  where("caption LIKE ?", "%#{search}%") 
+  where("caption LIKE ?", "%#{search}%")
   end
 end
