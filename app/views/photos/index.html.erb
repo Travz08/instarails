@@ -1,21 +1,19 @@
 <p id="notice"><%= notice %></p>
 </br>
 <div class="font">
-  <a class = "font" href="/">Instagram Feed</a>
+  Instagram Feed
 </div>
-<!-- <#% if @recipes.blank? %>
-  <h4>Sorry. There are no posts containing the term <%= params[:search] %>.</h4>
-<#% end %> -->
+
 <% @photos.each do |photo| %>
 <div class="card bg-light mx-auto" style="width: 50rem;">
   <div class="card-block">
     <h4 class="card-title">
       <div class="media">
-        <!-- <#%= image_tag(@profile.avatar_url, class: "media-avatar d-flex") %> -->
+        <%= image_tag(photo.user.profile.avatar_url, class: "media-avatar d-flex") %>
         <div class="media-body">
-          <!-- <#%= link_to profile_path(photo.user.profile.id) do %> -->
+          <%= link_to user_path(photo.user.id) do %>
             <h5 class="mt-4"><%= photo.user.username %></h5>
-          <!-- <#% end %> -->
+          <% end %>
         </div>
       </div>
       </h4>
@@ -34,17 +32,16 @@
     <% end %>
     <!--show the current vote-->
     <br/>
-    <% if photo.votes_for %>
-    Liked by
+    <% if photo.votes_for.voters.present? %>
+    Liked by <% photo.votes_for.voters.each do |p| %> <%= p.username %> <% end %>
     <% end %>
-    <% photo.votes_for.voters.each do |p| %> <%= p.username %> <% end %>
   <!-- <#%= render :partial => '/photos/vote', :class => "vote", :locals => { photo: photo } %> -->
     <br/>
     <p class="card-text"><%= photo.caption %></p>
     </br>
     <% if photo.comments %>
       <% photo.comments.each do |comment| %>
-        <%= comment.user.username %>:
+        <strong><%= comment.user.username %></strong>
         <%= comment.content %>
           <% if comment.user == current_user %>
             <%= link_to 'Delete', photo_comment_path(photo, comment), class: "badge badge-danger", method: :delete, data: { confirm: "Are you sure you want to delete your comment?" } %>

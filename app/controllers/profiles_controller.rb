@@ -5,7 +5,7 @@ class ProfilesController < ApplicationController
   # GET /profiles/1
   # GET /profiles/1.json
   def show
-    redirect_to edit_profile_url if @profile.nil?
+    
     @photos = @profile.user.photos if @profile.present?
 
   end
@@ -35,8 +35,9 @@ class ProfilesController < ApplicationController
   # PATCH/PUT /profiles/1
   # PATCH/PUT /profiles/1.json
   def update
+
     respond_to do |format|
-      if is_follow_action?
+      if performing_follow?
         @profile.user.toggle_followed_by(current_user)
         format.html { redirect_to @profile.user }
         format.json { render :show, status: :ok, location: @profile }
@@ -65,10 +66,12 @@ class ProfilesController < ApplicationController
     def set_profile
       # Looking at someone else’s profile
       if params[:id]
-        @profile = Profile.find(params[:id])
+        @profile = Profile.find_by(user: params[:id])
+        redirect_to error_path if @profile.nil?
       # Current user’s profile
       else
         @profile = Profile.find_by(user: current_user)
+        redirect_to edit_profile_path if @profile.nil?
       end
     end
 
@@ -77,7 +80,7 @@ class ProfilesController < ApplicationController
       params.require(:profile).permit(:avatar, :name, :bio)
     end
 
-    # def is_follow_action?
-    #   params.require(:user)[:follow].present?
-    # end
+    def performing_follow?
+      params.require(:user)[:toggle_follow].present?
+    end
 end

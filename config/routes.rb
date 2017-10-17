@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   resources :users, only: [:show, :update], controller: :profiles
   get '/photos/:photo_id/comments/:id/edit', to: "comments#edit"
   root 'home#landing'
-
+  get '/error' => 'profiles#error'
   resources :photos do
     resources :comments
     member do
